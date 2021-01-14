@@ -1,0 +1,24 @@
+{% extends 'main/base.html' %}
+
+{% block name %}
+ <h1 class="mb-3">Главная</h1>
+Цены от {{ n }} р
+{% for el in event %}
+ <div class="card text-center mb-5">
+  <div class="card-header">
+      <p>Место проведения - {{ el.Place_id }}</p>
+          <p style="color:red">{{ el.ConfineId }}</p>
+  </div>
+  <div class="card-body">
+    <h4 class="card-title">{{ el.Name }}</h4>
+    <p class="card-text">{{ el.About }}</p>
+      <a href="#" class="btn btn-primary">Купить</a>
+
+  </div>
+  <div class="card-footer text-muted">
+        <p>Дата проведения - {{ el.Date }}</p>
+  </div>
+  </div>
+
+ {% endfor %}
+{% endblock %}

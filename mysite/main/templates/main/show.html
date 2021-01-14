@@ -1,0 +1,27 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+ Концерты
+{% endblock %}
+
+{% block name %}
+ <h2>Спектакли</h2>
+ {% for el in event %}
+
+ <div class="card text-center">
+  <div class="card-header">
+      <p>Место проведения - {{ el.Place_id }}</p>
+          <p style="color:red">{{ el.ConfineId }}</p>
+  </div>
+  <div class="card-body">
+    <h4 class="card-title">{{ el.Name }}</h4>
+    <p class="card-text">{{ el.About }}</p>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
+  </div>
+  <div class="card-footer text-muted">
+        <p>Дата проведения - {{ el.Date }}</p>
+  </div>
+  </div>
+
+ {% endfor %}
+{% endblock %}

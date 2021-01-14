@@ -1,0 +1,18 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+ О нас
+{% endblock %}
+
+{% block name %}
+ <h2>Новости</h2>
+ <form method='post'>{% csrf_token %}
+ <button name="sort-btn" id="sort-btn" class="btn">Сначала новые</button></form>
+
+ {% for el in news %}
+   <div class="card p-3 mb-3 mt-3" style="background: lightgrey">
+    <h4>{{ el.Title }}</h4>
+    <p>{{ el.About }}</p>
+   </div>
+ {% endfor %}
+{% endblock %}
