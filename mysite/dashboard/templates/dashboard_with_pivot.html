@@ -1,0 +1,151 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <script src="https://cdn.flexmonster.com/flexmonster.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.flexmonster.com/demo.css">
+    <style>
+.fm-charts-color-1 {
+  fill: #ffa600 !important;
+}
+.fm-charts-color-2 {
+  fill: #7eae26 !important;
+}
+
+.fm-charts-color-3 {
+  fill: #00a45a !important;
+}
+
+.fm-charts-color-4 {
+  fill: #df3800 !important;
+}
+
+.fm-charts-color-5 {
+  fill: #e95800 !important;
+}
+
+.fm-charts-color-6 {
+  fill: #ffa600 !important;
+}</style>
+</head>
+<body>
+<div id="pivot-table-container" data-url="{% url 'pivot_data' %}"></div>
+<div id="pivot-chart-container"></div>
+<script>
+function processData(dataset) {
+    var result = []
+    dataset = JSON.parse(dataset);
+    dataset.forEach(item => result.push(item.fields));
+    return result;
+}
+$.ajax({
+    url: $("#pivot-table-container").attr("data-url"),
+    dataType: 'json',
+    success: function(data) {
+        new Flexmonster({
+            container: "#pivot-table-container",
+            componentFolder: "https://cdn.flexmonster.com/",
+            width: "100%",
+            height: 320,
+            toolbar: true,
+            report: {
+                dataSource: {
+                    type: "json",
+                    data: processData(data),
+                    mapping: {
+                        "TicketCat": {
+                            "caption": "TicketCat"
+                        },
+                        "EvId": {
+                            "caption": "EvId"
+                        },
+                        "Place": {
+                            "caption": "Place",
+                        },
+                        "unit_price": {
+                            "caption": "Unit Price",
+                            "type": "number"
+                        }
+                    }
+                },
+                "slice": {
+                    "rows": [{
+                        "uniqueName": "TicketCat"
+                    }],
+                    "columns": [{
+                            "uniqueName": "payment_method"
+                        },
+                        {
+                            "uniqueName": "Place"
+                        },
+                        {
+                            "uniqueName": "EvId"
+                        },
+                        {
+                            "uniqueName": "[Measures]"
+                        }
+                    ],
+                    "measures": [
+                        {
+                            "uniqueName": "Price",
+                            "aggregation": "sum"
+                        }
+                    ]
+                }
+            }
+        });
+        new Flexmonster({
+            container: "#pivot-chart-container",
+            componentFolder: "https://cdn.flexmonster.com/",
+            width: "100%",
+            height: 500,
+            //toolbar: true,
+            report: {
+                dataSource: {
+                    type: "json",
+                    data: processData(data),
+                    mapping: {
+                        "TicketCat": {
+                            "caption": "TicketCat"
+                        },
+                        "EvId": {
+                            "caption": "EvId"
+                        },
+                        "Place": {
+                            "caption": "Place",
+                        },
+                        "unit_price": {
+                            "caption": "Unit Price",
+                            "type": "number"
+                        }
+                    }
+                },
+                "slice": {
+                    "rows": [{
+                        "uniqueName": "TicketCat"
+                    }],
+                    "columns": [{
+                        "uniqueName": "[Measures]"
+                    }],
+                    "measures": [{
+                        "uniqueName": "Price",
+                        "formula": "sum(\"Price\")",
+                        "caption": "Price"
+                    }]
+                },
+                "options": {
+                    "viewType": "charts",
+                    "chart": {
+                        "type": "pie"
+                    }
+                }
+            }
+        });
+    }
+});
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+{% extends "main/base.html" %}
+
+{% block title %}
+ Профиль
+{% endblock %}
+
+{% block name %}
+<div class="m-3">
+<h2>Здравствуйте, {{ user.username }}!</h2>
+ <div class="m-3 card">
+  <div class="card-body">
+ <h5>Имя Фамилия - {{ user.first_name }} {{ user.last_name }}</h5>
+ <h5>Электронная почта - {{ user.email }}</h5></div></div>
+
+    <h4>Ваши билеты:</h4>
+    <h5 class="m-3">{{ add }}</h5>
+    <div class="m-3" style="display:flex; flex-direction: row">
+ {% for el in ticket %}
+  <div class="col-sm-6" style="width: 18rem; margin: 0.5rem;">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Билет № {{ el.TicketId_id }}</h5>
+        <p class="card-text">ID мероприятия - {{ el.EvId_id }}</p>
+          <p class="card-text">
+              <a class="link-dark" href="{% url 'events' id=el.EvId_id %}">Подробнее о мероприятии</a>
+          </p>
+      </div>
+    </div>
+  </div>
+  <br>
+ {% endfor %}
+</div>
+ {% if user.is_staff %}
+ <a class="link-dark" href="{% url 'dashboard_with_pivot'%}">Информационный дашборд</a><br>
+ {% endif %}
+
+<a href="{% url 'logout'%}">Выход</a>
+</div>
+{% endblock %}

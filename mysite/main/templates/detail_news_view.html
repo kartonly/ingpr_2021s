@@ -1,0 +1,15 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+ О новости
+{% endblock %}
+
+{% block name %}
+
+   <div class=" p-3 m-3">
+    <h2>{{ data.Title }}</h2>
+    <p>{{ data.About }}</p></div>
+
+   <a class=" p-3 m-3 " href="{% url 'about'%}">Назад ко всем новостям</a>
+
+{% endblock %}

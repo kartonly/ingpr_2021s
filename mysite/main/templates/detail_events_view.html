@@ -1,0 +1,23 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+ О мероприятии
+{% endblock %}
+
+{% block name %}
+
+   <div class=" p-3 m-3">
+    <h2>{{ data.Name }}</h2>
+    <h5>{{ data.About }}</h5><br>
+     <div class="card">
+         <div class="card-body">
+    <p>Дата - {{ data.Date }}</p>
+       <p>Место проведения - {{ data.Place_id }}</p>
+       <p>Тип мероприятия - {{ data.TypeId }}</p>
+       <p>Возрастное ограничение - {{ data.ConfineId }}</p>
+   </div>
+   </div>
+   </div>
+
+
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+  Результаты поиска
+{% endblock %}
+
+{% block name %}
+<div class="m-3">
+<h2>Результаты поиска</h2>
+
+<ul class="list-group list-group-flush">
+  {% for el in object_list %}
+    <li class="list-group-item"><a class="link-dark" href="{% url 'events' id=el.id %}">
+        {{ el.Name }}</a>
+    </li>
+  {% endfor %}
+</ul></div>
+{% endblock %}
