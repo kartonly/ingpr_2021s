@@ -11,6 +11,7 @@ urlpatterns = [
     path('about/<id>/update', views.update_news, name='news_update'),
     path('about/<id>/delete', views.delete_news, name='news_delete'),
     path('concerts', views.concerts, name='concerts'),
+    path('other', views.other, name='other'),
     path('show', views.show, name='show'),
     path('profile', views.profile, name='profile'),
     path('create', views.create, name='create'),

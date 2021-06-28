@@ -50,7 +50,9 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="{% url 'concerts' %}">Концерты</a>
-            <a class="dropdown-item" href="{% url 'show' %}">Спектакли</a></div>
+            <a class="dropdown-item" href="{% url 'show' %}">Спектакли</a>
+            <a class="dropdown-item" href="{% url 'other' %}">Другое</a>
+        </div>
       </li>
       <li class="nav-item">
           {% if user.is_staff %}

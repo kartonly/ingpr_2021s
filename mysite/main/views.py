@@ -95,8 +95,14 @@ def delete_news(request, id):
 
 def concerts(request):
     event = Event.objects.filter(TypeId=1)
-    count = Event.objects.count()
+    count = Event.objects.filter(TypeId=1).count()
     return render(request, 'main/concerts.html', {'event':event, 'count':count})
+
+
+def other(request):
+        event = Event.objects.exclude(TypeId=1).exclude(TypeId=2)
+        count = Event.objects.exclude(TypeId=1).exclude(TypeId=2).count()
+        return render(request, 'main/other.html', {'event':event, 'count':count})
 
 
 def profile(request):
@@ -130,7 +136,7 @@ def create(request):
 
 def show(request):
     event = Event.objects.filter(TypeId=2)
-    count = Event.objects.count()
+    count = Event.objects.filter(TypeId=2).count()
     return render(request, 'main/show.html', {'event':event, 'count':count})
 
 
