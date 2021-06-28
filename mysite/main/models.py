@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -124,6 +125,7 @@ class SoldTickets(models.Model):
     EvId = models.ForeignKey(Event, on_delete=models.CASCADE)
     Name = models.TextField('Имя покупателя')
     Surname = models.TextField('Фамилия покупателя')
+    UserId = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
     class Meta:

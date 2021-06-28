@@ -1,0 +1,48 @@
+{% extends "main/base.html" %}
+
+{% block title %}
+ Вход в систему
+{% endblock %}
+
+{% block name %}
+<h2 class="m-3" >Вход в систему</h2>
+{% if form.errors %}
+  <p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+{% if next %}
+  {% if user.is_authenticated %}
+    <p>Your account doesn't have access to this page. To proceed,
+    please login with an account that has access.</p>
+  {% else %}
+    <p>Please login to see this page.</p>
+  {% endif %}
+{% endif %}
+
+<div class="col-xs-12 col-md-7" style="margin: auto;">
+<form class="form-control" method="post" action="{% url 'login' %}">
+{% csrf_token %}
+
+
+<tr class="form-control">
+  <td >{{ form.username.label_tag }}</td>
+  <td > {{ form.username }}</td>
+</tr>
+<br>
+<tr class="form-control">
+  <td>{{ form.password.label_tag }}</td>
+  <td>{{ form.password }}</td>
+</tr>
+
+
+<input class="form-control" type="submit" value="Войти" />
+<input class="form-control" type="hidden" name="next" value="{{ next }}" />
+</form>
+</div>
+
+<p class="m-3"><a href="{% url 'signup' %}">Еще не зарегистрированы?</a></p>
+
+{# Assumes you setup the password_reset view in your URLconf #}
+
+
+{% endblock %}

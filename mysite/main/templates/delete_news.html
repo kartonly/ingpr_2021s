@@ -1,0 +1,19 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+ Удвлить новость
+{% endblock %}
+
+{% block name %}
+
+   <div class="main m-3">
+    <form method="POST">
+        {% csrf_token %}
+        <h3>Точно хотите удалить эту новость?</h3><br>
+        <input class="form-control" type="submit" value="Да" />
+        <br>
+        <a class="link-dark" href="/about">Назад</a>
+    </form>
+    </div>
+
+{% endblock %}

@@ -1,8 +1,8 @@
 {% extends 'main/base.html' %}
 
 {% block name %}
- <h1 class="mb-3">Создать новость</h1>
-<form method="post">{% csrf_token %}
+ <h1 class="m-3">Создать новость</h1>
+<form class="m-3" method="post">{% csrf_token %}
   <div class="form-group">
     <label>Название новости</label>
        {{ form.Title }}
@@ -11,6 +11,6 @@
     <label>Сама новость</label>
         {{ form.About }}
   </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="submit" class="btn btn-primary">Создать</button>
 </form>
 {% endblock %}

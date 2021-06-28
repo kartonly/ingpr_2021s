@@ -1,4 +1,7 @@
+from django.db.models import Q
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
+from django.views.generic import ListView
 from rest_framework.generics import get_object_or_404
 
 from .models import News
@@ -10,6 +13,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.core import serializers
 from .serializers import NewsSerializer
+from django import template
+from django.contrib.auth.models import Group
+
+register = template.Library()
 
 
 def index(request):
@@ -33,9 +40,69 @@ def about(request):
     return render(request, 'main/about.html', {'news':news})
 
 
+def news(request, id):
+    context={}
+
+    # add the dictionary during initialization
+    context["data"] = News.objects.get(id=id)
+
+    return render(request, "detail_news_view.html", context)
+
+
+def events(request, id):
+    context={}
+
+    # add the dictionary during initialization
+    context["data"] = Event.objects.get(id=id)
+
+    return render(request, "detail_events_view.html", context)
+
+
+def update_news(request, id):
+    context ={}
+
+    # fetch the object related to passed id
+    obj = get_object_or_404(News, id=id)
+
+    # pass the object as instance in form
+    form = NewsForm(request.POST or None, instance=obj)
+
+    # save the data from the form and
+    # redirect to detail_view
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect("/about/"+id)
+
+    context["form"] = form
+
+    return render(request, "update_news.html", context)
+
+
+def delete_news(request, id):
+    context ={}
+
+    # fetch the object related to passed id
+    obj = get_object_or_404(News, id=id)
+
+    if request.method == "POST":
+        obj.delete()
+        return HttpResponseRedirect("/about")
+
+    return render(request, "delete_news.html", context)
+
+
 def concerts(request):
     event = Event.objects.filter(TypeId=1)
-    return render(request, 'main/concerts.html', {'event':event})
+    count = Event.objects.count()
+    return render(request, 'main/concerts.html', {'event':event, 'count':count})
+
+
+def profile(request):
+    return render(request, 'main/profile.html')
+
+
+def logout(request):
+    return render(request, 'registration/logged_out.html')
 
 
 def create(request):
@@ -55,7 +122,8 @@ def create(request):
 
 def show(request):
     event = Event.objects.filter(TypeId=2)
-    return render(request, 'main/show.html', {'event':event})
+    count = Event.objects.count()
+    return render(request, 'main/show.html', {'event':event, 'count':count})
 
 
 def allevent(request):
@@ -94,6 +162,28 @@ class NewsView(APIView):
         return Response({
             "message": "News with id `{}` has been deleted.".format(pk)}, status=204)
 
+
+def is_admin(user):
+    return user.groups.filter(name='Admin').exists()
+
+
+def is_manager(user):
+    return user.groups.filter(name='Manager').exists()
+
+
+def is_in_groups(user):
+    return user.groups.filter(name__in=['Admin', 'Manager']).exists()
+
+
+class SearchResultsView(ListView):
+    model = Event
+    template_name = 'main/search_results.html'
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        object_list = Event.objects.filter(
+            Q(Name__icontains=query) | Q(About__icontains=query)
+        )
+        return object_list
 
 
 

@@ -1,0 +1,21 @@
+{% extends "main/base.html" %}
+
+{% block title %}
+ Профиль
+{% endblock %}
+
+{% block name %}
+<div class="m-3">
+<h2>Здравствуйте, {{ user.username }}!</h2>
+ <div class="m-3 card">
+  <div class="card-body">
+ <h5>Имя Фамилия - {{ user.first_name }} {{ user.last_name }}</h5>
+ <h5>Электронная почта - {{ user.email }}</h5></div></div>
+
+ {% if user.is_staff %}
+ <a class="link-dark" href="{% url 'dashboard_with_pivot'%}">Информационный дашборд</a><br>
+ {% endif %}
+
+<a href="{% url 'logout'%}">Выход</a>
+</div>
+{% endblock %}

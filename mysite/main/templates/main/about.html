@@ -5,14 +5,19 @@
 {% endblock %}
 
 {% block name %}
- <h2>Новости</h2>
+ <h2  class="m-3">Новости</h2>
  <form method='post'>{% csrf_token %}
  <button name="sort-btn" id="sort-btn" class="btn">Сначала новые</button></form>
 
  {% for el in news %}
-   <div class="card p-3 mb-3 mt-3" style="background: lightgrey">
-    <h4>{{ el.Title }}</h4>
+   <div class="card p-3 m-3" style="background: lightgrey">
+       <h4><a class="link-dark" href="{% url 'news' id=el.id %}">{{ el.Title }}</a></h4>
     <p>{{ el.About }}</p>
+       {% load auth_extras %}
+       {% if request.user|has_group:"Admin" %}
+       <button type="submit" class="btn btn-light"><a class="link-danger" href="{% url 'news_update' id=el.id %}">Редактировать</a></button>
+       <button type="submit" class="btn btn-danger"><a class="link-light" href="{% url 'news_delete' id=el.id %}">Удалить</button>
+       {% endif %}
    </div>
  {% endfor %}
 {% endblock %}
