@@ -17,7 +17,11 @@
   <div class="card-body">
       <h4 class="card-title"><a class="link-dark" href="{% url 'events' id=el.id %}">{{ el.Name }}</a></h4>
     <p class="card-text">{{ el.About }}</p>
-    <a href="#" class="btn btn-primary">Купить билет</a>
+    {% if user.is_authenticated %}
+      <a href="{% url 'events' id=el.id %}" class="btn btn-outline-dark">Купить</a>
+      {% else %}
+      <p>Авторизуйтесь, чтобы купить билет</p>
+      {% endif %}
   </div>
   <div class="card-footer text-muted">
         <p>Дата проведения - {{ el.Date }}</p>

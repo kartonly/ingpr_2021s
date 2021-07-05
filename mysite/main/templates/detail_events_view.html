@@ -15,9 +15,38 @@
        <p>Место проведения - {{ data.Place_id }}</p>
        <p>Тип мероприятия - {{ data.TypeId }}</p>
        <p>Возрастное ограничение - {{ data.ConfineId }}</p>
+
    </div>
    </div>
    </div>
+<div class="m-3">
+<h4 class="m-3">Доступные билеты:</h4>
+    <h5 class="m-3">{{ add }}</h5></div>
+ {% if n == 0 %}
+<div class="m-3" style="display:flex; flex-direction: row; flex-wrap: wrap;">
+ {% for el in ticket %}
+  <div class="col-sm-6" style="width: 18rem; margin: 0.5rem;">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Билет № {{ el.id }}</h5>
+        <p class="card-text">Цена - {{ el.Price }}р</p>
+          <p class="card-text">
+              {% if user.is_authenticated %}
+      <form method="post">{% csrf_token %}
+          <button type="submit" class="btn btn-primary" name="send" value={{ el.id }}>Купить</button></form>
+      {% else %}
+      <p style="color:blue">Авторизуйтесь, чтобы купить билет</p>
+      {% endif %}
+          </p>
+      </div>
+    </div>
+  </div>
+     <br>
+
+ {% endfor %}{% endif %}
+</div>
+
+
 
 
 {% endblock %}

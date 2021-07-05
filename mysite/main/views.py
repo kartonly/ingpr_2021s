@@ -25,6 +25,9 @@ def index(request):
     event = Event.objects.all()
     ticket = Tickets.objects.values_list('Price')
     n = ticket.order_by('Price').first()
+    if request.method == 'POST':
+        tick = SoldTickets.objects.create(id, TicketId=ticket.id, EvId=event.id, Name=user.first_name, Surname=user.last_name, Buyer=user.id)
+        return redirect('profile')
 
     return render(request, 'main/index.html', {'event':event, 'ticket':ticket, 'n':n})
 
@@ -52,12 +55,34 @@ def news(request, id):
 
 
 def events(request, id):
-    context={}
+    data = Event.objects.get(id=id)
+    count=Tickets.objects.filter(EvId=id).count()
+    ticket=Tickets.objects.filter(EvId=id)
+    count2=Tickets.objects.filter(EvId=id).count()
+    add="Доступны к покупке"
+    n=0
+    if count==0:
+        add="Билетов на мероприятие нет"
+    else:
+        for el in ticket:
+            if SoldTickets.objects.filter(TicketId=el.id).exists():
+                n=n+1
+        if n==count2:
+            add="Билетов на мероприятие нет"
+        else:
+            n=0
+            if request.method == 'POST':
+                tickId=int(request.POST['send'])
+                evId=int(id)
+                tick = SoldTickets.objects.create(TicketId=Tickets.objects.get(id=tickId), EvId=Event.objects.get(id=evId), Name=request.user.first_name, Surname=request.user.last_name, Buyer=User.objects.get(id=request.user.id))
+                return redirect('profile')
 
-    # add the dictionary during initialization
-    context["data"] = Event.objects.get(id=id)
+    tickets=[]
+    for elem in ticket:
+        if not SoldTickets.objects.filter(TicketId=elem.id).exists():
+            tickets.append(elem)
 
-    return render(request, "detail_events_view.html", context)
+    return render(request, "detail_events_view.html", {'data':data, 'ticket':tickets, 'add':add, 'n':n})
 
 
 def update_news(request, id):

@@ -41,7 +41,7 @@
     <span class="sr-only">Next</span>
   </a>
 </div>
-<h3 class="m-3">Цены от {{ n }} р</h3>
+<h3 class="m-3">Цены от {{ n|slugify }} р</h3>
 {% for el in event %}
  <div class="card text-center m-5">
   <div class="card-header">
@@ -51,8 +51,6 @@
   <div class="card-body">
     <h4 class="card-title">{{ el.Name }}</h4>
     <p class="card-text">{{ el.About }}</p>
-      <a href="#" class="btn btn-outline-dark">Купить</a>
-
 
   </div>
   <div class="card-footer text-muted">
